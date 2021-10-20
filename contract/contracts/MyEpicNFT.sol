@@ -15,7 +15,7 @@ contract MyEpicNFT is ERC721URIStorage {
 
   // This is our SVG code. All we need to change is the word that's displayed. Everything else stays the same.
   // So, we make a baseSvg variable here that all our NFTs can use.
-  string baseSvg = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: white; font-family: serif; font-size: 12px; }</style><rect width='100%' height='100%' fill='black' /><text x='50%' y='50%' class='base' dominant-baseline='middle' text-anchor='middle'>";
+  string baseSvg = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: white; font-family: serif; font-size: 12px; }</style><rect width='100%' height='100%' fill='black'/><foreignObject x='20' y='20' width='310' height='200'><div xmlns='http://www.w3.org/1999/xhtml' style='width: 100%; height: 100%; overflow: hidden; color: grey; font-family: verdana, sans-serif; line-height: 1.25'><p>";
 
   // I create three arrays, each with their own theme of random words.
   // Pick some random funny words, names of anime characters, foods you like, whatever! 
@@ -28,8 +28,15 @@ contract MyEpicNFT is ERC721URIStorage {
     "I was horny.",
     "Charlie's like origami, he folds under pressure.",
     "I'm a Motherfucker! I'm a Motherfucker!",
-    "Come on, don't be mad, my little pussy-fart."
+    "Come on, don't be mad, my little pussy-fart.",
+    "What? I'm jokin' with the guy. Bringin' a little sunshine into his life. Careful, you'll peel.",
+    "I noticed you conveniently left out your eating disorder.",
+    "Ever been bitch slapped?",
+    "What the hell are you still doing here?",
+    "Well fuck my ozone."
   ];
+
+  event NewEpicNFTMinted(address sender, uint256 tokenId);
 
   constructor() ERC721 ("SquareNFT", "SQUARE") {
     console.log("This is my NFT contract. Woah!");
@@ -55,7 +62,7 @@ contract MyEpicNFT is ERC721URIStorage {
     string memory quote = pickRandomQuote(newItemId);
 
     // I concatenate it all together, and then close the <text> and <svg> tags.
-    string memory finalSvg = string(abi.encodePacked(baseSvg, quote, "</text></svg>"));
+    string memory finalSvg = string(abi.encodePacked(baseSvg, quote, "</p></div></foreignObject></svg>"));
 
     // Get all the JSON metadata in place and base64 encode it.
     string memory json = Base64.encode(
@@ -88,6 +95,8 @@ contract MyEpicNFT is ERC721URIStorage {
     _setTokenURI(newItemId, finalTokenUri);
   
     _tokenIds.increment();
+
+    emit NewEpicNFTMinted(msg.sender, newItemId);
     console.log("An NFT w/ ID %s has been minted to %s", newItemId, msg.sender);
   }
 }
