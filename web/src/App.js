@@ -3,11 +3,11 @@ import twitterLogo from './assets/twitter-logo.svg';
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import myEpicNft from './utils/MyEpicNFT.json';
-import { Pacman } from 'react-pure-loaders';
+import mintingGif from './assets/hank.gif'
 
-const TWITTER_HANDLE = '_buildspace';
+const TWITTER_HANDLE = 'gonzadevelop';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
-const OPENSEA_LINK = '';
+const OPENSEA_LINK = 'https://testnets.opensea.io/collection/squarenft-vikei7ud8i';
 const TOTAL_MINT_COUNT = 50;
 
 const CONTRACT_ADDRESS = "0xb5190C36f714A7932937fdCB0446efea5f44F3Da";
@@ -96,9 +96,7 @@ const App = () => {
           console.log(from, tokenId.toNumber())
           alert(`Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`)
         });
-
         console.log("Setup event listener!")
-
       } else {
         console.log("Ethereum object doesn't exist!");
       }
@@ -151,23 +149,33 @@ const App = () => {
     </button>
   )
 
+  const openCollection = () => {
+    window.open(OPENSEA_LINK, '_blank').focus();
+  }
+
+  const renderCollectionLink = () => (
+    <div>
+      <button onClick={openCollection} className="cta-button opensea-button">
+        Open collection in OpenSea
+      </button>
+    </div>
+  );
+
   return (
     <div className="App">
       <div className="container">
         <div className="header-container">
           <p className="header gradient-text">Hank Evans random quotes</p>
           <p className="sub-text">
-            Each unique. Each beautiful. Discover your Hank Evans quote as NFT today.
+            Each unique. Discover your Hank Evans quote as NFT today.
           </p>
           {currentAccount === "" ? renderNotConnectedContainer() : renderMintUI()}
           {mining &&
-            <div className="loader-container">
-              <Pacman
-                color={'#f0f8ff'}
-                loading={mining}
-              />
+            <div>
+              <img src={mintingGif} alt="minting NFT..." />
             </div>
           }
+          {currentAccount === "" ? null : renderCollectionLink()}
         </div>
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
@@ -176,7 +184,7 @@ const App = () => {
             href={TWITTER_LINK}
             target="_blank"
             rel="noreferrer"
-          >{`built on @${TWITTER_HANDLE}`}</a>
+          >{`built by @${TWITTER_HANDLE}`}</a>
         </div>
       </div>
     </div>

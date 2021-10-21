@@ -63,6 +63,8 @@
 
 .opensea-button {
   background-color: rgb(32, 129, 226);
+  /* padding-bottom: 30px;
+  padding-top: 30px; */
 }
 
 .mint-count {
